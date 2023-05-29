@@ -68,16 +68,16 @@ def createConfig():
         },
         "system_menu":{
             "system_menu_button_size" : 160 * size_сoeff,
-            "system_menu_icon_size" : 128 * size_сoeff,
+            "system_menu_icon_size" : 102.4 * size_сoeff,
 
             "language_n_region_button_x" : 80 * size_сoeff,
             "language_n_region_button_y" : 93.3 * size_сoeff,
-            "language_n_region_button_text" : "Language & Region",
+            "language_n_region_button_text" : "Language &&\nRegion",
             "language_n_region_button_font_size" : 0.015,
 
             "date_n_time_button_x" : 320 * size_сoeff,
             "date_n_time_button_y" : 93.3 * size_сoeff,
-            "date_n_time_button_text" : "Date & Time",
+            "date_n_time_button_text" : "Date &&\nTime",
             "date_n_time_button_font_size" : 0.015,
 
             "sound_button_x" :  560 * size_сoeff,
@@ -93,7 +93,7 @@ def createConfig():
             "users_button_x" : 320 * size_сoeff,
             "users_button_y" : 346.6 * size_сoeff,
             "users_button_text" : "Users",
-            "users_button_font_sze" : 0.015,
+            "users_button_font_size" : 0.015,
 
             "system_info_button_x" : 560 * size_сoeff,
             "system_info_button_y" : 346.6 * size_сoeff,
@@ -123,34 +123,53 @@ class WidgetParamets:
 
         self.connections_button_x = config["main_menu"]["connections_button_x"]
         self.connections_button_y = config["main_menu"]["connections_button_y"]
+        self.connections_button_text = config["main_menu"]["connections_button_text"]
+        self.connections_button_font_size = config["main_menu"]["connections_button_font_size"]
 
         self.devices_button_x = config["main_menu"]["devices_button_x"]
         self.devices_button_y = config["main_menu"]["devices_button_y"]
+        self.devices_button_text = config["main_menu"]["devices_button_text"]
+        self.devices_button_font_size = config["main_menu"]["devices_button_font_size"]
 
         self.appearance_button_x = config["main_menu"]["appearance_button_x"]
         self.appearance_button_y = config["main_menu"]["appearance_button_y"]
+        self.appearance_button_text = config["main_menu"]["appearance_button_text"]
+        self.appearance_button_font_size = config["main_menu"]["appearance_button_font_size"]
 
         #buttons positions of system menu
         self.system_menu_button_size = config["system_menu"]["system_menu_button_size"]
         self.system_menu_icon_size = config["system_menu"]["system_menu_icon_size"]
 
+
         self.language_n_region_button_x = config["system_menu"]["language_n_region_button_x"]
         self.language_n_region_button_y = config["system_menu"]["language_n_region_button_y"]
+        self.language_n_region_button_text = config["system_menu"]["language_n_region_button_text"]
+        self.language_n_region_button_font_size = config["system_menu"]["language_n_region_button_font_size"]
 
         self.date_n_time_button_x = config["system_menu"]["date_n_time_button_x"]
         self.date_n_time_button_y = config["system_menu"]["date_n_time_button_y"]
+        self.date_n_time_button_text = config["system_menu"]["date_n_time_button_text"]
+        self.date_n_time_button_font_size = config["system_menu"]["date_n_time_button_font_size"]
 
         self.sound_button_x = config["system_menu"]["sound_button_x"]
         self.sound_button_y = config["system_menu"]["sound_button_y"]
+        self.sound_button_text = config["system_menu"]["sound_button_text"]
+        self.sound_button_font_size = config["system_menu"]["sound_button_font_size"]
 
         self.power_button_x = config["system_menu"]["power_button_x"]
         self.power_button_y = config["system_menu"]["power_button_y"]
+        self.power_button_text = config["system_menu"]["power_button_text"]
+        self.power_button_font_size = config["system_menu"]["power_button_font_size"]
 
         self.users_button_x = config["system_menu"]["users_button_x"]
         self.users_button_y = config["system_menu"]["users_button_y"]
+        self.users_button_text = config["system_menu"]["users_button_text"]
+        self.users_button_font_size = config["system_menu"]["users_button_font_size"]
 
         self.system_info_button_x = config["system_menu"]["system_info_button_x"]
         self.system_info_button_y = config["system_menu"]["system_info_button_y"]
+        self.system_info_button_text = config["system_menu"]["system_info_button_text"]
+        self.system_info_button_font_size = config["system_menu"]["system_info_button_font_size"]
 
 widget_parametrs = WidgetParamets()
 
@@ -186,70 +205,81 @@ class SystemMenu:
         self.language_n_region_button = QtWidgets.QToolButton(main_window)
         setToolButtonParametrs(button = self.language_n_region_button,
                                icon_name = "locale",
-                               icon_size = widget_parametrs.system_menu_icon_size * 0.8,
-                               text = "Language\n&& Region",
+                               icon_size = widget_parametrs.system_menu_icon_size,
+                               text = widget_parametrs.language_n_region_button_text,
                                width = widget_parametrs.system_menu_button_size,
                                height = widget_parametrs.system_menu_button_size,
                                x_position = widget_parametrs.language_n_region_button_x,
                                y_position = widget_parametrs.language_n_region_button_y,
                                connected_func = None,
-                               font = 0.0015)
+                               font = widget_parametrs.language_n_region_button_font_size)
 
         self.date_n_time_button = QtWidgets.QToolButton(main_window)
         setToolButtonParametrs(button = self.date_n_time_button,
                                icon_name = "accessories-clock",
-                               icon_size = widget_parametrs.system_menu_icon_size * 0.8,
-                               text = "Date & Time",
+                               icon_size = widget_parametrs.system_menu_icon_size,
+                               text = widget_parametrs.date_n_time_button_text,
                                width = widget_parametrs.system_menu_button_size,
                                height = widget_parametrs.system_menu_button_size,
                                x_position = widget_parametrs.date_n_time_button_x,
                                y_position = widget_parametrs.date_n_time_button_y,
+                               font_size = widget_parametrs.date_n_time_button_font_size,
                                connected_func = None)
 
         self.sound_button = QtWidgets.QToolButton(main_window)
         setToolButtonParametrs(button = self.sound_button,
                                icon_name = "kmix",
                                icon_size = widget_parametrs.system_menu_icon_size,
-                               text = "Sound",
+                               text = widget_parametrs.sound_button_text,
                                width = widget_parametrs.system_menu_button_size,
                                height = widget_parametrs.system_menu_button_size,
                                x_position = widget_parametrs.sound_button_x,
                                y_position = widget_parametrs.sound_button_y,
                                connected_func = None,
-                               font_size = 0.02)
+                               font_size = widget_parametrs.sound_button_font_size)
 
         self.power_button = QtWidgets.QToolButton(main_window)
         setToolButtonParametrs(button = self.power_button,
                                icon_name = "cs-power",
                                icon_size = widget_parametrs.system_menu_icon_size,
-                               text = "Power",
+                               text = widget_parametrs.power_button_text,
                                width = widget_parametrs.system_menu_button_size,
                                height = widget_parametrs.system_menu_button_size,
                                x_position = widget_parametrs.power_button_x,
                                y_position = widget_parametrs.power_button_y,
+                               font_size = widget_parametrs.power_button_font_size,
                                connected_func = None)
 
         self.users_button = QtWidgets.QToolButton(main_window)
         setToolButtonParametrs(button = self.users_button,
                                icon_name = "preferences-system-users",
                                icon_size = widget_parametrs.system_menu_icon_size,
-                               text = "Users",
+                               text = widget_parametrs.users_button_text,
                                width = widget_parametrs.system_menu_button_size,
                                height = widget_parametrs.system_menu_button_size,
                                x_position = widget_parametrs.users_button_x,
                                y_position = widget_parametrs.users_button_y,
+                               font_size = widget_parametrs.users_button_font_size,
                                connected_func = None)
 
         self.system_info_button = QtWidgets.QToolButton(main_window)
         setToolButtonParametrs(button = self.system_info_button,
                                icon_name = "lbry",
                                icon_size = widget_parametrs.system_menu_icon_size,
-                               text = "Appearance",
+                               text = widget_parametrs.system_info_button_text,
                                width = widget_parametrs.system_menu_button_size,
                                height = widget_parametrs.system_menu_button_size,
                                x_position = widget_parametrs.system_info_button_x,
                                y_position = widget_parametrs.system_info_button_y,
+                               font_size = widget_parametrs.system_info_button_font_size,
                                connected_func = None)
+        def hide_system_menu(self):
+            self.language_n_region_button.hide()
+            self.date_n_time_button.hide()
+            self.sound_button.hide()
+            self.power_button.hide()
+            self.users_button.hide()
+            self.system_info_button.hide()
 
 class StartMenu:
     def __init__(self):
@@ -263,40 +293,49 @@ class StartMenu:
                                x_position = widget_parametrs.system_button_x,
                                y_position = widget_parametrs.system_button_y,
                                font_size = widget_parametrs.system_button_font_size,
-                               connected_func = None)
+                               connected_func = self.test)
 
         self.connections_button = QtWidgets.QToolButton(main_window)
         setToolButtonParametrs(button = self.connections_button,
                                icon_name = "proxy",
                                icon_size = widget_parametrs.start_menu_icon_size,
-                               text = "Connections",
+                               text = widget_parametrs.connections_button_text,
                                width = widget_parametrs.start_menu_button_size,
                                height = widget_parametrs.start_menu_button_size,
                                x_position = widget_parametrs.connections_button_x,
                                y_position = widget_parametrs.connections_button_y,
+                               font_size = widget_parametrs.connections_button_font_size,
                                connected_func = None)
 
         self.devices_button = QtWidgets.QToolButton(main_window)
         setToolButtonParametrs(button = self.devices_button,
                                icon_name = "randr",
                                icon_size = widget_parametrs.start_menu_icon_size,
-                               text = "Devices",
+                               text = widget_parametrs.devices_button_text,
                                width = widget_parametrs.start_menu_button_size,
                                height = widget_parametrs.start_menu_button_size,
                                x_position = widget_parametrs.devices_button_x,
                                y_position = widget_parametrs.devices_button_y,
+                               font_size = widget_parametrs.devices_button_font_size,
                                connected_func = None)
 
         self.appearance_button = QtWidgets.QToolButton(main_window)
         setToolButtonParametrs(button = self.appearance_button,
                                icon_name = "xfce4-backdrop",
                                icon_size = widget_parametrs.start_menu_icon_size,
-                               text = "Appearance",
+                               text = widget_parametrs.appearance_button_text,
                                width = widget_parametrs.start_menu_button_size,
                                height = widget_parametrs.start_menu_button_size,
                                x_position = widget_parametrs.appearance_button_x,
                                y_position = widget_parametrs.appearance_button_y,
+                               font_size = widget_parametrs.appearance_button_font_size,
                                connected_func = None)
+
+        self.back = QtWidgets.QToolButton(main_window)
+        self.back.hide()
+
+    def test(self):
+        print(1234134)
 
     def hide_start_menu(self):
         self.system_button.hide()
@@ -310,11 +349,29 @@ class StartMenu:
         self.devices_button.show()
         self.appearance_button.show()
 
+    def show_system_menu(self):
+        print(12341234)
+        self.hide_start_menu()
+        system_menu = SystemMenu()
+        setToolButtonParametrs(button = self.back,
+                               icon_name = "xfce4-backdrop",
+                               icon_size = widget_parametrs.start_menu_icon_size,
+                               text = "Back",
+                               width = 100,
+                               height = 100,
+                               x_position = 0,
+                               y_position = 0,
+                               font_size = widget_parametrs.appearance_button_font_size,
+                               connected_func = system_menu.hide_system_menu)
+        self.back.show()
+
+
 class AllButtons:
     def __init__(self):
         start_menu = StartMenu()
-        start_menu.hide_start_menu()
-        sss = SystemMenu()
+        start_menu.system_button.clicked.connect(start_menu.test)
+        #start_menu.hide_start_menu()
+        #sss = SystemMenu()
 
 
 allbtns = None
