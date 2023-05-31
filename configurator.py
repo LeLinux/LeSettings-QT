@@ -42,6 +42,8 @@ def createConfig():
 
     #I wrote it 26 may of 2023. I think in few days it will be legacy code. All of this shit based on size coefficients. Nums setted first - size/coordinates in 800x600 window size
     config = {
+        "back_button_width" : 50 * size_сoeff,
+        "back_button_height" : 30 * size_сoeff,
         "main_menu": {
             "start_menu_button_size" : 160 * size_сoeff,
             "start_menu_icon_size" : 128 * size_сoeff,
@@ -111,6 +113,9 @@ class WidgetParamets:
 
         with open("config.json", "r") as read_file:
             config = json.load(read_file)
+
+        self.back_button_width = config["back_button_width"]
+        self.back_button_height = config["back_button_height"]
 
         #buttons positions of main menu
         self.start_menu_button_size = config["main_menu"]["start_menu_button_size"]
@@ -200,6 +205,19 @@ def setToolButtonParametrs(button, icon_name, icon_size, text, connected_func, w
     button.setGeometry(0, 0, width, height)
     button.move(x_position, y_position)
 
+def setComboBoxParametrs(combobox, items, width, height, x_position, y_position):
+    pass
+
+class LanguageNRegion:
+    def __init__(self):
+        self.languages = ["chinese", "english", "russian"]
+        self.language_list = QtWidgets.QComboBox(main_window)
+        for i in self.languages: self.language_list.addItem(i)
+        self.language_list.move(50,0)
+        self.language_list.setGeometry(0, 0, 100, 50)
+        self.language_list.setStyleSheet("QComboBox {font: " + str(0.1 * window_width) + "px}")
+
+
 class SystemMenu:
     def __init__(self):
         self.language_n_region_button = QtWidgets.QToolButton(main_window)
@@ -273,13 +291,22 @@ class SystemMenu:
                                y_position = widget_parametrs.system_info_button_y,
                                font_size = widget_parametrs.system_info_button_font_size,
                                connected_func = None)
-        def hide_system_menu(self):
-            self.language_n_region_button.hide()
-            self.date_n_time_button.hide()
-            self.sound_button.hide()
-            self.power_button.hide()
-            self.users_button.hide()
-            self.system_info_button.hide()
+
+    def hide(self):
+        self.language_n_region_button.hide()
+        self.date_n_time_button.hide()
+        self.sound_button.hide()
+        self.power_button.hide()
+        self.users_button.hide()
+        self.system_info_button.hide()
+
+    def show(self):
+        self.language_n_region_button.show()
+        self.date_n_time_button.show()
+        self.sound_button.show()
+        self.power_button.show()
+        self.users_button.show()
+        self.system_info_button.show()
 
 class StartMenu:
     def __init__(self):
@@ -293,7 +320,7 @@ class StartMenu:
                                x_position = widget_parametrs.system_button_x,
                                y_position = widget_parametrs.system_button_y,
                                font_size = widget_parametrs.system_button_font_size,
-                               connected_func = self.test)
+                               connected_func = lambda: self.show_system_menu())
 
         self.connections_button = QtWidgets.QToolButton(main_window)
         setToolButtonParametrs(button = self.connections_button,
@@ -334,42 +361,46 @@ class StartMenu:
         self.back = QtWidgets.QToolButton(main_window)
         self.back.hide()
 
-    def test(self):
-        print(1234134)
+        self.system_menu = SystemMenu()
+        self.system_menu.hide()
 
-    def hide_start_menu(self):
+    def hide(self):
         self.system_button.hide()
         self.connections_button.hide()
         self.devices_button.hide()
         self.appearance_button.hide()
 
-    def show_start_menu(self):
+    def show(self):
         self.system_button.show()
         self.connections_button.show()
         self.devices_button.show()
         self.appearance_button.show()
 
+    def back_to_system_menu(self, child_class):
+        self.show()
+        child_class.hide()
+        self.back.hide()
+
     def show_system_menu(self):
-        print(12341234)
-        self.hide_start_menu()
-        system_menu = SystemMenu()
+        self.hide()
+        self.system_menu.show()
         setToolButtonParametrs(button = self.back,
-                               icon_name = "xfce4-backdrop",
+                               icon_name = None,
                                icon_size = widget_parametrs.start_menu_icon_size,
-                               text = "Back",
-                               width = 100,
-                               height = 100,
+                               text = "< Back",
+                               width = widget_parametrs.back_button_width,
+                               height = widget_parametrs.back_button_height,
                                x_position = 0,
                                y_position = 0,
                                font_size = widget_parametrs.appearance_button_font_size,
-                               connected_func = system_menu.hide_system_menu)
+                               connected_func = lambda : self.back_to_system_menu(self.system_menu))
         self.back.show()
 
 
 class AllButtons:
     def __init__(self):
         start_menu = StartMenu()
-        start_menu.system_button.clicked.connect(start_menu.test)
+        sss = LanguageNRegion()
         #start_menu.hide_start_menu()
         #sss = SystemMenu()
 
