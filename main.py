@@ -18,6 +18,9 @@ if __name__ == "__main__":
 
     qdarktheme.setup_theme()
 
+    font_size = conf.window_width / 800 * 12
+    app.setFont(QtGui.QFont("Ubuntu Mono", int(font_size)))
+
     lesettings = LeSettings()
     lesettings.setFixedSize(conf.window_width, conf.window_height)
     lesettings.show()
