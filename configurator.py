@@ -1,5 +1,6 @@
 from screeninfo import get_monitors
 from PySide6 import QtCore, QtWidgets, QtGui
+import custom_widgets
 import json5 as json
 
 main_window = None
@@ -36,6 +37,12 @@ def setWindowSize():
 
     print("[LOG] window size", window_width, "x", window_height)
 
+def setSwitchSize():
+    global window_width
+    global window_height
+    custom_widgets.switch_button_width = window_width / 26
+    custom_widgets.switch_button_height = window_height / 35
+
 def setComboBoxParametrs(combobox, items, width, height, x_position, y_position, connected_func):
     for i in items: combobox.addItem(i)
     combobox.setGeometry(0, 0, width, height)
@@ -43,10 +50,37 @@ def setComboBoxParametrs(combobox, items, width, height, x_position, y_position,
     combobox.activated.connect(connected_func)
 
 setWindowSize()
+setSwitchSize()
 
 class WIFI_menu:
     def __init__(self):
-        pass
+
+        self.wifi_switch = custom_widgets.SwitchButton(main_window)
+
+        #It's just fast legacy fix. Maybe in far future I'll make normal fix
+        self.wifi_switch.setChecked(1)
+        self.wifi_switch.setChecked(0)
+
+        self.wifi_switch.checkedChanged.connect(lambda : print(1))
+        self.wifi_switch.move(window_width - 180 - custom_widgets.switch_button_width, window_width / 16)
+
+        self.wifi_label = QtWidgets.QLabel(main_window)
+        self.wifi_label.setFixedWidth(300)
+        self.wifi_label.setText("Wi-Fi")
+        self.wifi_label.setStyleSheet("QLabel {font-size: 18px;}")
+
+        self.wifi_label.move(380, window_width / 16)
+
+        self.hide()
+
+    def show(self):
+        self.wifi_switch.show()
+        self.wifi_label.show()
+
+    def hide(self):
+        self.wifi_switch.hide()
+        self.wifi_label.hide()
+
 
 class Ethernet_menu:
     def __init__(self):
@@ -87,6 +121,7 @@ class Language_and_Region_menu:
         self.language_list.hide()
         self.region_list.hide()
 
+
 class UI:
     def setUI(self):
         QtGui.QIcon.setThemeName("candy-icons")
@@ -94,33 +129,115 @@ class UI:
         self.menu_buttons_list = QtWidgets.QListWidget(main_window)
         self.menu_buttons_list.setFixedSize(window_width / 5, window_height)
 
-        # self.listWidgetItem = QtWidgets.QListWidgetItem()
-        # self.listWidget.addItem(self.listWidgetItem)
-        # self.listWidget.setItemWidget(self.listWidgetItem, self.language_list)
-        #
-        #
-        # self.listWidgetItem1 = QtWidgets.QListWidgetItem()
-        # self.listWidget.addItem(self.listWidgetItem1)
-        # self.listWidget.setItemWidget(self.listWidgetItem1, self.language_list1)
-        self.connections_label = QtWidgets.QLabel()
-        self.connections_label.setText("Wi-Fi")
-        self.connections_label.setStyleSheet("QToolButton {padding-left : 30px; }")
+        self.wifi_menu = WIFI_menu()
 
-        self.connections_label_widget_item = QtWidgets.QListWidgetItem()
-        self.connections_label_widget_item.setSizeHint(QtCore.QSize(0, 30))
-        self.menu_buttons_list.addItem(self.connections_label_widget_item)
-        self.menu_buttons_list.setItemWidget(self.connections_label_widget_item, self.connections_label)
+        self.connections_label = QtWidgets.QLabel()
+        self.connections_label_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuLabel(self.connections_label, self.connections_label_list_widget_item, "Connections")
 
         self.wifi_menu_button = QtWidgets.QToolButton()
-        self.wifi_menu_button.setText("Wi-Fi")
-        self.wifi_menu_button.setIcon(QtGui.QIcon.fromTheme("spotify"))
-        self.wifi_menu_button.setIconSize(QtCore.QSize(24, 24))
-        self.wifi_menu_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
-        self.wifi_menu_button.setStyleSheet("QToolButton {padding-left : 5px; }")
-
         self.wifi_button_list_widget_item = QtWidgets.QListWidgetItem()
-        self.wifi_button_list_widget_item.setSizeHint(QtCore.QSize(0, 30))
-        self.menu_buttons_list.addItem(self.wifi_button_list_widget_item)
-        self.menu_buttons_list.setItemWidget(self.wifi_button_list_widget_item, self.wifi_menu_button)
+        self.configureMenuButton(self.wifi_menu_button, self.wifi_button_list_widget_item, "Wi-Fi", "spotify")
+        self.wifi_menu_button.clicked.connect(lambda : self.wifi_menu.show())
 
-        #self.listWidget.addWidget(language_list1)
+        self.bluetooth_menu_button = QtWidgets.QToolButton()
+        self.bluetooth_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.bluetooth_menu_button, self.bluetooth_button_list_widget_item, "Bluetooth", "bluetooth")
+
+        self.ethenet_menu_button = QtWidgets.QToolButton()
+        self.ethenet_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.ethenet_menu_button, self.ethenet_button_list_widget_item, "Ethernet", "preferences-system-network-ethernet")
+
+
+
+        self.appearance_label = QtWidgets.QLabel()
+        self.appearance_label_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuLabel(self.appearance_label, self.appearance_label_list_widget_item, "Appearance")
+
+        self.desktop_menu_button = QtWidgets.QToolButton()
+        self.desktop_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.desktop_menu_button, self.desktop_button_list_widget_item, "Desktop", "preferences-desktop-wallpaper")
+
+        self.multitasking_menu_button = QtWidgets.QToolButton()
+        self.multitasking_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.multitasking_menu_button, self.multitasking_button_list_widget_item, "Multitasking", "cs-themes")
+
+        self.themes_menu_button = QtWidgets.QToolButton()
+        self.themes_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.themes_menu_button, self.themes_button_list_widget_item, "Themes", "preferences-theme")
+
+
+
+
+
+        self.system_label = QtWidgets.QLabel()
+        self.system_label_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuLabel(self.system_label, self.system_label_list_widget_item, "System")
+
+        self.language_and_region_menu_button = QtWidgets.QToolButton()
+        self.language_and_region_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.language_and_region_menu_button, self.language_and_region_button_list_widget_item, "Language && Region", "config-language")
+
+        self.date_and_time_menu_button = QtWidgets.QToolButton()
+        self.date_and_time_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.date_and_time_menu_button, self.date_and_time_button_list_widget_item, "Date && Time", "clock")
+
+        self.sound_menu_button = QtWidgets.QToolButton()
+        self.sound_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.sound_menu_button, self.sound_button_list_widget_item, "Sound", "gnome-mixer")
+
+        self.power_menu_button = QtWidgets.QToolButton()
+        self.power_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.power_menu_button, self.power_button_list_widget_item, "Power", "preferences-system-power")
+
+        self.users_menu_button = QtWidgets.QToolButton()
+        self.user_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.users_menu_button, self.user_button_list_widget_item, "Users", "preferences-system-users")
+
+        self.system_info_menu_button = QtWidgets.QToolButton()
+        self.system_info_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.system_info_menu_button, self.system_info_button_list_widget_item, "System info", "lbry")
+
+
+        self.devices_label = QtWidgets.QLabel()
+        self.devices_label_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuLabel(self.devices_label, self.devices_label_list_widget_item, "Devices")
+
+        self.displays_menu_button = QtWidgets.QToolButton()
+        self.displays_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.displays_menu_button, self.displays_button_list_widget_item, "Displays", "display-capplet")
+
+        self.keyboard_menu_button = QtWidgets.QToolButton()
+        self.keyboard_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.keyboard_menu_button, self.keyboard_button_list_widget_item, "Keyboard", "input-keyboard")
+
+        self.mouse_menu_button = QtWidgets.QToolButton()
+        self.mouse_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.mouse_menu_button, self.mouse_button_list_widget_item, "Mouse", "input-mouse")
+
+        self.printers_menu_button = QtWidgets.QToolButton()
+        self.printers_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.printers_menu_button, self.printers_button_list_widget_item, "Printers", "cs-printer")
+
+        self.drivers_menu_button = QtWidgets.QToolButton()
+        self.drivers_button_list_widget_item = QtWidgets.QListWidgetItem()
+        self.configureMenuButton(self.drivers_menu_button, self.drivers_button_list_widget_item, "Drivers", "driver-manager")
+
+
+
+    def configureMenuLabel(self, label, list_item, text):
+        label.setText(text)
+        label.setStyleSheet("QLabel {padding-left : 5px; font-size: 18px; background-color: #292B2E}")
+        list_item.setSizeHint(QtCore.QSize(0, 30))
+        self.menu_buttons_list.addItem(list_item)
+        self.menu_buttons_list.setItemWidget(list_item, label)
+
+    def configureMenuButton(self, button, list_item, text, icon_name):
+        button.setText(text)
+        button.setIcon(QtGui.QIcon.fromTheme(icon_name))
+        button.setIconSize(QtCore.QSize(23, 23))
+        button.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        button.setStyleSheet("QToolButton {padding-left : 5px; font-size: 16px;}")
+        list_item.setSizeHint(QtCore.QSize(0, 30))
+        self.menu_buttons_list.addItem(list_item)
+        self.menu_buttons_list.setItemWidget(list_item, button)
