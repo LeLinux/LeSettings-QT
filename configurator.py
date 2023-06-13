@@ -2,6 +2,9 @@ from screeninfo import get_monitors
 from PySide6 import QtCore, QtWidgets, QtGui
 import custom_widgets
 import json5 as json
+import subprocess as sb
+import spinner
+
 
 main_window = None
 
@@ -62,16 +65,30 @@ class WIFI_menu:
         self.wifi_switch.setChecked(0)
 
         self.wifi_switch.checkedChanged.connect(lambda : print(1))
-        self.wifi_switch.move(window_width - 180 - custom_widgets.switch_button_width, window_width / 16)
+        self.wifi_switch.move(window_width - 180 - custom_widgets.switch_button_width, window_height / 16)
 
         self.wifi_label = QtWidgets.QLabel(main_window)
         self.wifi_label.setFixedWidth(300)
         self.wifi_label.setText("Wi-Fi")
         self.wifi_label.setStyleSheet("QLabel {font-size: 18px;}")
 
-        self.wifi_label.move(380, window_width / 16)
+        self.wifi_label.move(390, window_height / 16)
+
+
+        self.wifi_list = QtWidgets.QListWidget(main_window)
+        self.wifi_list.setFixedSize(497, 400)
+        self.wifi_list.move(390, window_height / 5)
+
+        #print(sb.check_output(["timeout", "5s", "nmcli", "-f", "SSID", "dev", "wifi"]).decode("utf-8").split("\n")[1:])
+        self.spinner = spinner.WaitingSpinner(main_window)
+        self.spinner.move(500, 200)
+        self.spinner.start()
+
 
         self.hide()
+
+    def search4wifi(self):
+        pass
 
     def show(self):
         self.wifi_switch.show()
@@ -222,6 +239,17 @@ class UI:
         self.drivers_menu_button = QtWidgets.QToolButton()
         self.drivers_button_list_widget_item = QtWidgets.QListWidgetItem()
         self.configureMenuButton(self.drivers_menu_button, self.drivers_button_list_widget_item, "Drivers", "driver-manager")
+
+        self.test = QtWidgets.QToolButton()
+        self.test_item = QtWidgets.QListWidgetItem()
+        self.test.setText("1234")
+        self.test.setIcon(QtGui.QIcon("./arrows-rotate-solid.svg"))
+        self.test.setIconSize(QtCore.QSize(23, 23))
+        self.test.setToolButtonStyle(QtCore.Qt.ToolButtonTextBesideIcon)
+        self.test.setStyleSheet("QToolButton {padding-left : 5px; font-size: 16px;}")
+        self.test_item.setSizeHint(QtCore.QSize(0, 30))
+        self.menu_buttons_list.addItem(self.test_item)
+        self.menu_buttons_list.setItemWidget(self.test_item, self.test)
 
 
 
